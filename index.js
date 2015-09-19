@@ -12,6 +12,9 @@ function createMiddleware(server, opts) {
   // Graceful shutdown taken from: http://blog.argteam.com/
   process.on('SIGTERM', function () {
     options.logger.warn('Received kill signal (SIGTERM), shutting down')
+
+    // if we are already in shut down mode then forcibly close
+    if (shuttingDown) return process.exit(1)
     gracefulExit()
   })
 

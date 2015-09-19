@@ -68,7 +68,7 @@ describe('express-graceful-shutdown', function () {
       assert.equal(typeof createExpressGracefulShutdown({}).setShuttingDown, 'function')
     })
 
-    it('should not do anything once setShuttingDown has been called', function (done) {
+    it('should exit once setShuttingDown has been called', function (done) {
 
       var gracefulShutdown
         , processExitCalled = false
@@ -81,7 +81,7 @@ describe('express-graceful-shutdown', function () {
       var shutDown = createExpressGracefulShutdown({}, { logger: logger } )
       shutDown.setShuttingDown()
       gracefulShutdown()
-      assert.equal(processExitCalled, false, 'process.exit should not have been called')
+      assert.equal(processExitCalled, true, 'process.exit should have been called')
       done()
 
     })
