@@ -23,7 +23,7 @@ function createMiddleware(server, opts) {
     if (!process.env.NODE_ENV) return process.exit(1)
 
     shuttingDown = true
-    options.logger.warn('Attepming to gracefully exit...')
+    options.logger.warn('Attempting to gracefully exit...')
 
     setTimeout(function () {
       options.logger.error('Could not close connections in time, forcefully shutting down')
