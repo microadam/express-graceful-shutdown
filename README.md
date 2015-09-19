@@ -15,9 +15,20 @@ npm install express-graceful-shutdown --save
 ```js
 var express = require('express')
   , app = express()
-  , createGracefulShutdownMiddleware = require('express-graceful-shutdown')
+  , gracefulShutdownMiddleware = require('express-graceful-shutdown')(app)
 
-app.use(createGracefulShutdownMiddleware)
+app.use(gracefulShutdownMiddleware.middleware)
+```
+
+If you wish to gain direct access to the `gracefulExit` function, this is available like so:
+
+```js
+var express = require('express')
+  , app = express()
+  , gracefulShutdownMiddleware = require('express-graceful-shutdown')(app)
+  , gracefulExit = gracefulShutdownMiddleware.gracefulExit
+
+gracefulExit()
 ```
 
 ## Credits
