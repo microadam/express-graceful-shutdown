@@ -37,6 +37,10 @@ function createMiddleware(server, opts) {
 
   }
 
+  function setShuttingDown() {
+    shuttingDown = true
+  }
+
   function middleware(req, res, next) {
     if (!shuttingDown) return next()
     res.set('Connection', 'close')
@@ -46,6 +50,7 @@ function createMiddleware(server, opts) {
   return {
     middleware: middleware
   , gracefulExit: gracefulExit
+  , setShuttingDown: setShuttingDown
   }
 
 }

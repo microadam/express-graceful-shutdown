@@ -62,4 +62,30 @@ describe('express-graceful-shutdown', function () {
 
   })
 
+  describe('.setShuttingDown', function () {
+
+    it('should be a function' , function () {
+      assert.equal(typeof createExpressGracefulShutdown({}).setShuttingDown, 'function')
+    })
+
+    it('should not do anything once setShuttingDown has been called', function (done) {
+
+      var gracefulShutdown
+        , processExitCalled = false
+      createExpressGracefulShutdown.__set__('process'
+        , { env: {}
+          , exit: function () { processExitCalled = true }
+          , on: function (name, fn) { gracefulShutdown = fn }
+          })
+
+      var shutDown = createExpressGracefulShutdown({}, { logger: logger } )
+      shutDown.setShuttingDown()
+      gracefulShutdown()
+      assert.equal(processExitCalled, false, 'process.exit should not have been called')
+      done()
+
+    })
+
+  })
+
 })

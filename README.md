@@ -20,15 +20,17 @@ var express = require('express')
 app.use(gracefulShutdownMiddleware.middleware)
 ```
 
-If you wish to gain direct access to the `gracefulExit` function, this is available like so:
+If you wish to gain direct access to the `gracefulExit` function or indicate that the server is already shutting down, this is available like so:
 
 ```js
 var express = require('express')
   , app = express()
   , gracefulShutdownMiddleware = require('express-graceful-shutdown')(app)
   , gracefulExit = gracefulShutdownMiddleware.gracefulExit
+  , setShuttingDown = gracefulShutdownMiddleware.setShuttingDown
 
 gracefulExit()
+setShuttingDown()
 ```
 
 ## Credits
