@@ -10,15 +10,20 @@ function createMiddleware(server, opts) {
       , forceTimeout: 30000 }, opts)
 
   // Graceful shutdown taken from: http://blog.argteam.com/
-  process.on('SIGTERM', gracefulExit)
+  process.on('SIGTERM', function () {
+    options.logger.warn('Received kill signal (SIGTERM), shutting down')
+    gracefulExit()
+  })
 
   function gracefulExit() {
+    // if we are already shutting down, don't need to do anything
+    if (shuttingDown) return
 
     // Don't bother with graceful shutdown on development to speed up round trip
     if (!process.env.NODE_ENV) return process.exit(1)
 
     shuttingDown = true
-    options.logger.warn('Received kill signal (SIGTERM), shutting down')
+    options.logger.warn('Attepming to gracefully exit...')
 
     setTimeout(function () {
       options.logger.error('Could not close connections in time, forcefully shutting down')
@@ -38,6 +43,9 @@ function createMiddleware(server, opts) {
     res.send(503, 'Server is in the process of restarting.')
   }
 
-  return middleware
+  return {
+    middleware: middleware
+  , gracefulExit: gracefulExit
+  }
 
 }
